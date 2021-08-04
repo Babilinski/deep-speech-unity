@@ -183,7 +183,7 @@ public class ContinuousVoiceRecorder : MonoBehaviour
                         _audioDetected = false;
                         _clearData = true;
                     }
-                    else
+                    else if (_hasStream)
                     {
                         transmit = true;
                     }
