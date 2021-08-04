@@ -79,7 +79,7 @@ public class SpeechTextToText : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (_canRecord && _isSetup == false)
             SetupService(_detectPhrases, _autoDetectVoice);
@@ -110,7 +110,6 @@ public class SpeechTextToText : MonoBehaviour
     {
         _sttClient = new DeepSpeech(modelPath);
         _sttClient.EnableExternalScorer(externalScorerPath);
-
         //If you want to add bias to a word. Only supports single words.
         //_sttClient.AddHotWord("select",20.0f);
 
@@ -252,9 +251,12 @@ public class SpeechTextToText : MonoBehaviour
         {
             if (_audioDetected == false) // User first starts talking after a gap
             {
+                if (_requestNeedsSending == false)
+                    Debug.Log("User started talking");
+
                 _audioDetected = true;
                 _requestNeedsSending = true;
-                Debug.Log("User started talking");
+           
             }
         }
         else // max volume below threshold
@@ -263,10 +265,10 @@ public class SpeechTextToText : MonoBehaviour
             {
                 _timeAtSilenceBegan = Time.time;
                 _audioDetected = false;
-                Debug.Log("User stopped talking");
             }
             else if (_requestNeedsSending == true) // while no new voice input is detected
             {
+
                 if (Time.time - _timeAtSilenceBegan > _silenceTimer)
                 {
                     Debug.Log("Sending audio to recognizer...");
