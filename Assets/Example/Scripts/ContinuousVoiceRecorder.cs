@@ -84,6 +84,7 @@ public class ContinuousVoiceRecorder : MonoBehaviour
 
         _frequency = _sttClient.GetModelSampleRate();
         _sampleSize = _frequency / 2;
+        _device = Microphone.devices[0];
 
         StartRecording();
     }
